@@ -1,6 +1,6 @@
-
 import textwrap
-from v1.sistema_bancario import ContaCorrente, Deposito, PessoaFisica, Saque
+from datetime import datetime
+from v2.sistema_bancario import ContaCorrente, Deposito, PessoaFisica, Saque
 
 
 def menu():
@@ -16,7 +16,12 @@ def menu():
     return input(textwrap.dedent(menu))
 
 def log_transacao(func):
-    pass
+    def wrapper(*args, **kwargs):
+        data_hora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        tipo_transacao = func.__name__
+        print(f"[{data_hora}] Transaçao: {tipo_transacao}")
+        return func(*args, **kwargs)
+    return wrapper
 
 def filtrar_cliente(cpf, clientes):
     clientes_filtrados = [cliente for cliente in clientes if cliente.cpf == cpf]
