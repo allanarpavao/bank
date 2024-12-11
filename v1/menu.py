@@ -2,7 +2,6 @@
 import textwrap
 from v1.sistema_bancario import ContaCorrente, Deposito, PessoaFisica, Saque
 
-
 def menu():
     menu = """\n
     ================ MENU ================
