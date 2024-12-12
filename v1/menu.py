@@ -1,6 +1,11 @@
 
 import textwrap
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from v1.sistema_bancario import ContaCorrente, Deposito, PessoaFisica, Saque
+
 
 def menu():
     menu = """\n
@@ -14,8 +19,6 @@ def menu():
     => """
     return input(textwrap.dedent(menu))
 
-def log_transacao(func):
-    pass
 
 def filtrar_cliente(cpf, clientes):
     clientes_filtrados = [cliente for cliente in clientes if cliente.cpf == cpf]
@@ -63,23 +66,20 @@ def menu_nova_conta(cliente, contas):
             print("\n@@@ Operação inválida. @@@")
             continue
 
-@log_transacao
 def depositar(cliente, conta):
     valor = float(input("Informe o valor do depósito: "))
     transacao = Deposito(valor)
     cliente.realizar_transacao(conta, transacao)
 
-@log_transacao
 def sacar(cliente, conta):
     valor = float(input("Informe o valor do saque: "))
     transacao = Saque(valor)
     cliente.realizar_transacao(conta, transacao)
 
-@log_transacao
 def exibir_extrato(conta):
     print("\n================ EXTRATO ================")
     transacoes = conta.historico.transacoes
-
+    breakpoint()
     extrato = ""
     if not transacoes:
         extrato = "Não foram realizadas movimentações."
@@ -91,7 +91,6 @@ def exibir_extrato(conta):
     print(f"\nSaldo:\n\tR$ {conta.saldo:.2f}")
     print("==========================================")
 
-@log_transacao
 def criar_cliente(cpf, clientes):
     nome = input("Informe o nome completo: ")
     data_nascimento = input("Informe a data de nascimento (dd-mm-aaaa): ")
@@ -103,7 +102,6 @@ def criar_cliente(cpf, clientes):
 
     print("\n=== Cliente criado com sucesso! ===")
 
-@log_transacao
 def criar_conta(cliente, numero_conta, contas):
     conta = ContaCorrente.nova_conta(cliente=cliente, numero=numero_conta)
     contas.append(conta)

@@ -1,6 +1,27 @@
 from abc import ABC, abstractclassmethod, abstractproperty
 from datetime import datetime
 
+class ContaIterador:
+    def __init__(self, contas):
+        self.contas = contas
+        self.index = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.index >= len(self.contas):
+            raise StopIteration
+        else:
+            conta = self.contas[self.index]
+            self.index +=1
+            return { 
+                "numero": conta.numero,
+                "saldo": conta.saldo,
+                "cliente": conta.cliente.nome,
+                "agencia": conta.agencia,
+            }
+
 
 class Cliente:
     def __init__(self, endereco):
@@ -128,10 +149,13 @@ class Historico:
             {
                 "tipo": transacao.__class__.__name__,
                 "valor": transacao.valor,
-                "data": datetime.now().strftime("%d-%m-%Y %H:%M:%s"),
+                "data": datetime.now().strftime("%d-%m-%Y %H:%M"),
             }
         )
-
+    def gerar_relatorio(self, tipo_transacao=None):
+        for transacao in self._transacoes:
+            if tipo_transacao is None or transacao["tipo"] == tipo_transacao:
+                yield transacao
 
 class Transacao(ABC):
     @property

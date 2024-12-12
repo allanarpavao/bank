@@ -1,6 +1,6 @@
 import textwrap
 from datetime import datetime
-from v2.sistema_bancario import ContaCorrente, Deposito, PessoaFisica, Saque
+from v2.sistema_bancario import ContaCorrente, ContaIterador, Deposito, PessoaFisica, Saque
 
 
 def menu():
@@ -82,16 +82,19 @@ def sacar(cliente, conta):
     cliente.realizar_transacao(conta, transacao)
 
 @log_transacao
-def exibir_extrato(conta):
+def exibir_extrato(conta, tipo_transacao=None):
     print("\n================ EXTRATO ================")
-    transacoes = conta.historico.transacoes
+    transacoes = conta.historico.gerar_relatorio(tipo_transacao=tipo_transacao)
 
     extrato = ""
-    if not transacoes:
+    transacao_found = False
+
+    for transacao in transacoes:
+        transacao_found = True
+        extrato += f"\n{transacao['tipo']}:\n\tR$ {transacao['valor']:.2f} em {transacao['data']}"
+
+    if not transacao_found:
         extrato = "Não foram realizadas movimentações."
-    else:
-        for transacao in transacoes:
-            extrato += f"\n{transacao['tipo']}:\n\tR$ {transacao['valor']:.2f}"
 
     print(extrato)
     print(f"\nSaldo:\n\tR$ {conta.saldo:.2f}")
@@ -119,9 +122,13 @@ def criar_conta(cliente, numero_conta, contas):
 
 
 def listar_contas(contas):
-    for conta in contas:
+    conta_iterador = ContaIterador(contas)
+    for conta_info in conta_iterador:
         print("=" * 100)
-        print(textwrap.dedent(str(conta)))
+        print(f"C/C: {conta_info['numero']}")
+        print(f"Agência: {conta_info['agencia']}")
+        print(f"Titular {conta_info['cliente']}")
+        print(f"Saldo: R$ {conta_info['saldo']:.2f}")
 
 
 def main():
