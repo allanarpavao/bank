@@ -1,0 +1,7 @@
+[2024-12-13 08:43:09] Function: CRIAR_CLIENTE | args=(), kwargs=(cpf='120', clientes=[<PessoaFisica: ('120')>]) | Return: None
+[2024-12-13 08:43:15] Function: CRIAR_CONTA | args=(<PessoaFisica: ('120')>, 1, [<ContaCorrente: ('0001', '1', 'Allana')>]), kwargs=() | Return: None
+[2024-12-13 08:43:20] Function: DEPOSITAR | args=(<PessoaFisica: ('120')>, <ContaCorrente: ('0001', '1', 'Allana')>), kwargs=() | Return: None
+[2024-12-13 08:43:24] Function: SACAR | args=(<PessoaFisica: ('120')>, <ContaCorrente: ('0001', '1', 'Allana')>), kwargs=() | Return: None
+[2024-12-13 08:43:26] Function: EXIBIR_EXTRATO | args=(<ContaCorrente: ('0001', '1', 'Allana')>), kwargs=() | Return: None
+[2024-12-13 08:55:01] Função: CRIAR_CLIENTE | args=(), kwargs=(cpf='130', clientes=[<PessoaFisica: ('130')>]) | Return: None
+[2024-12-13 08:55:05] Função: CRIAR_CONTA | args=(<PessoaFisica: ('130')>, 1, [<ContaCorrente: ('0001', '1', 'Chyu')>]), kwargs=() | Return: None

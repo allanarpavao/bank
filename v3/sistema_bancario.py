@@ -45,7 +45,9 @@ class PessoaFisica(Cliente):
         self.nome = nome
         self.data_nascimento = data_nascimento
         self.cpf = cpf
-
+    
+    def __repr__(self) -> str:
+        return f"<{self.__class__.__name__}: ('{self.cpf}')>"
 
 class Conta:
     def __init__(self, numero, cliente):
@@ -131,7 +133,9 @@ class ContaCorrente(Conta):
             return super().sacar(valor)
 
         return False
-
+    def __repr__(self):
+        return f"<{self.__class__.__name__}: ('{self.agencia}', '{self.numero}', '{self.cliente.nome}')>"
+    
     def __str__(self):
         return f"""\
             Agência:\t{self.agencia}

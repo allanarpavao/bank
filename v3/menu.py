@@ -4,7 +4,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import textwrap
 from datetime import datetime
-from v2.sistema_bancario import ContaCorrente, ContaIterador, Deposito, PessoaFisica, Saque
+from v3.sistema_bancario import ContaCorrente, ContaIterador, Deposito, PessoaFisica, Saque
 
 
 def menu():
@@ -21,10 +21,27 @@ def menu():
 
 def log_transacao(func):
     def wrapper(*args, **kwargs):
+        # Call the original function
+        resultado = func(*args, **kwargs)
+        
+        # Log information
         data_hora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         tipo_transacao = func.__name__.upper()
+        
+        # Get function arguments
+        args_repr = ", ".join(repr(arg) for arg in args)
+        kwargs_repr = ", ".join(f"{k}={v!r}" for k, v in kwargs.items())
+        all_args = f"args=({args_repr}), kwargs=({kwargs_repr})"
+
+        # log entry
+        log_entry = f"[{data_hora}] Função: {tipo_transacao} | {all_args} | Return: {resultado!r}\n"
         print(f"[{data_hora}] Transaçao: {tipo_transacao}")
-        return func(*args, **kwargs)
+
+        # Write log entry to the file
+        with open("log.txt", "a") as log_file:
+            log_file.write(log_entry)
+
+        return resultado # Return the function's result
     return wrapper
 
 def filtrar_cliente(cpf, clientes):
